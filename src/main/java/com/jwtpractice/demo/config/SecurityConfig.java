@@ -4,17 +4,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity // 기본적인 Web 보인을 활성화 하겠다.
 public class SecurityConfig {
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public WebSecurityCustomizer configure(){
+        return (web) -> web.ignoring()
+                .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+                .requestMatchers(new AntPathRequestMatcher("/favicon.ico"));
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-                .authorizeRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제합을 설정하겠다
-                .requestMatchers("/api/hello").permitAll() // /api/hello에 대한 요청은 인증 없이 접근 허용
-                .anyRequest().authenticated(); // 나머지 요청들은 모두 인증이 필요하다.
+                .authorizeRequests()
+                .requestMatchers(new AntPathRequestMatcher("/api/hello")).permitAll()
+                .anyRequest().authenticated();
 
         return http.build();
     }

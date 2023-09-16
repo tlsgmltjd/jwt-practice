@@ -1,4 +1,4 @@
-package com.jwtpractice.demo;
+package com.jwtpractice.demo.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

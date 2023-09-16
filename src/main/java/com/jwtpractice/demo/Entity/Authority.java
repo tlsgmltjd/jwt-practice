@@ -1,4 +1,5 @@
 package com.jwtpractice.demo.Entity;
+
 import lombok.*;
 
 import jakarta.persistence.Column;
